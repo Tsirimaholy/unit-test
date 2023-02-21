@@ -1,12 +1,13 @@
-import { render } from "@testing-library/react";
+import React from "react";
+import {fireEvent, render} from "@testing-library/react";
 
-import { ListItem } from "../ListItem";
+import {ListItem} from "../ListItem";
 
 const mockOnCheck = jest.fn();
 
 describe('ListItem', () => {
     it('display value correctly', () => {
-        const { getByText } = render(
+        const {getByText} = render(
             <ListItem
                 id='list-item-test'
                 checkable={true}
@@ -18,9 +19,9 @@ describe('ListItem', () => {
         const value = getByText('Lorem ipsum dolor sit amet consectetur');
         expect(value).toBeInTheDocument();
     });
-    
+
     it('checkbox is shown', () => {
-        const { getByTestId } = render(
+        const {getByTestId} = render(
             <ListItem
                 id='list-item-1'
                 checkable={true}
@@ -34,7 +35,7 @@ describe('ListItem', () => {
     });
 
     it('checkbox is hidden', () => {
-        const { getByTestId, debug } = render(
+        const {getByTestId, debug} = render(
             <ListItem
                 id='list-item-1'
                 checkable={false}
@@ -45,9 +46,21 @@ describe('ListItem', () => {
         const node = getByTestId('test-list-item-1-container');
         expect(node.children).toHaveLength(1);
     });
-    
-    //TODO: implement this
-    it('callback is called', () => {});
+
+    it('callback is called', () => {
+        const {getByRole} = render(
+            <ListItem
+                id='list-item-1'
+                checkable={true}
+                onCheck={mockOnCheck}
+                item='Lorem ipsum dolor sit amet consectetur'
+            />
+        );
+
+        const element = getByRole("checkbox");
+        fireEvent.click(element);
+        expect(mockOnCheck).toHaveBeenCalled();
+    });
 
     //TODO: implement this
     it('callback is not called when not checkable', () => {});
