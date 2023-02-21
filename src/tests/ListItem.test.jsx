@@ -51,7 +51,7 @@ describe('ListItem', () => {
         const {getByRole} = render(
             <ListItem
                 id='list-item-1'
-                checkable={true}
+                checkable
                 onCheck={mockOnCheck}
                 item='Lorem ipsum dolor sit amet consectetur'
             />
@@ -63,7 +63,20 @@ describe('ListItem', () => {
     });
 
     //TODO: implement this
-    it('callback is not called when not checkable', () => {});
+    it('callback is not called when not checkable', () => {
+        const {queryAllByRole} = render(
+            <ListItem
+                id='list-item-1'
+                checkable={false}
+                onCheck={mockOnCheck}
+                item='Lorem ipsum dolor sit amet consectetur'
+            />
+        );
+
+        const {length} = queryAllByRole("checkbox");
+        expect(length).toEqual(0);
+        expect(mockOnCheck).not.toHaveBeenCalled();
+    });
 
     //TODO: implement this
     it('matches saved snapshot', () => {
